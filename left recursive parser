@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char nonterm, prod[10], alpha[10], beta[10];
+    int i, j = 0, k = 0;
+
+    printf("Enter Non-Terminal (A): ");
+    scanf(" %c", &nonterm);
+
+    printf("Enter Production (A->Aα | β) without spaces: ");
+    scanf("%s", prod);
+
+    // prod example: AAb|c  meaning A -> A b | c
+
+    // Separate alpha (Aα) and beta (β)
+    for (i = 1; prod[i] != '\0'; i++) {
+        if (prod[i] == nonterm) {               // Aα case
+            i++;
+            while (prod[i] != '|' && prod[i] != '\0')
+                alpha[k++] = prod[i++];
+        }
+        if (prod[i] == '|') {                    // β case
+            i++;
+            while (prod[i] != '\0')
+                beta[j++] = prod[i++];
+        }
+    }
+
+    alpha[k] = '\0';
+    beta[j] = '\0';
+
+    printf("\nAfter Eliminating Left Recursion:\n");
+    printf("%c -> %s%c'\n", nonterm, beta, nonterm);
+    printf("%c' -> %s%c' | ε\n", nonterm, alpha, nonterm);
+
+    return 0;
+}
