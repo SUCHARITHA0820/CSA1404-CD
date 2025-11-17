@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <string.h>
+
+struct Symbol {
+    char name[20];
+    char type[10];
+    int address;
+} table[50];
+
+int count = 0;
+
+void insert() {
+    printf("\nEnter symbol name: ");
+    scanf("%s", table[count].name);
+
+    printf("Enter type: ");
+    scanf("%s", table[count].type);
+
+    table[count].address = count + 100;  // simple address
+    count++;
+
+    printf("Symbol inserted.\n");
+}
+
+void search() {
+    char name[20];
+    printf("\nEnter symbol name to search: ");
+    scanf("%s", name);
+
+    for (int i = 0; i < count; i++) {
+        if (strcmp(table[i].name, name) == 0) {
+            printf("Found: %s  %s  %d\n", table[i].name, table[i].type, table[i].address);
+            return;
+        }
+    }
+    printf("Symbol not found.\n");
+}
+
+void display() {
+    printf("\nSymbol Table:\n");
+    printf("Name\tType\tAddress\n");
+    for (int i = 0; i < count; i++) {
+        printf("%s\t%s\t%d\n", table[i].name, table[i].type, table[i].address);
+    }
+}
+
+int main() {
+    int choice;
+
+    while (1) {
+        printf("\n1. Insert\n2. Search\n3. Display\n4. Exit\nEnter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: insert(); break;
+            case 2: search(); break;
+            case 3: display(); break;
+            case 4: return 0;
+            default: printf("Invalid choice.\n");
+        }
+    }
+}
