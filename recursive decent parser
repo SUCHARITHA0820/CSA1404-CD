@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+char input[100];
+int pos = 0;
+
+// Forward declarations
+void E();
+void Eprime();
+void T();
+void Tprime();
+void F();
+
+void error() {
+    printf("Error at position %d near '%c'\n", pos, input[pos]);
+}
+
+int match(char ch) {
+    if (input[pos] == ch) {
+        pos++;
+        return 1;
+    }
+    return 0;
+}
+
+// E → T E'
+void E() {
+    T();
+    Eprime();
+}
+
+// E' → + T E' | ε
+void Eprime() {
+    if (input[pos] == '+') {
+        match('+');
+        T();
+        Eprime();
+    }
+    // else epsilon (do nothing)
+}
+
+// T → F T'
+void T() {
+    F();
+    Tprime();
+}
+
+// T' → * F T' | ε
+void Tprime() {
+    if (input[pos] == '*') {
+        match('*');
+        F();
+        Tprime();
+    }
+    // else epsilon (do nothing)
+}
+
+// F → ( E ) | id
+void F() {
+    if (match('(')) {
+        E();
+        if (!match(')')) {
+            error();
+        }
+    } else if (isalpha(input[pos])) {  // id
+        pos++;
+    } else {
+        error();
+    }
+}
+
+int main() {
+    printf("Enter expression: ");
+    scanf("%s", input);
+
+    pos = 0;
+    E();
+
+    if (input[pos] == '\0') {
+        printf("Input string is VALID\n");
+    } else {
+        printf("Input string is INVALID\n");
+    }
+
+    return 0;
+}
