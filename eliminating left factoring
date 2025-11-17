@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char nonterm;
+    char prod[50];
+    char common[20], p1[20], p2[20];
+    int i = 0, j = 0, k = 0;
+
+    printf("Enter Non-Terminal: ");
+    scanf(" %c", &nonterm);
+
+    printf("Enter production (ex: A->abz|abx) without spaces: ");
+    scanf("%s", prod);
+
+    // Skip "A->"
+    i = 3;
+
+    // Extract first production p1
+    while (prod[i] != '|' && prod[i] != '\0')
+        p1[j++] = prod[i++];
+
+    p1[j] = '\0';
+    i++; // skip '|'
+
+    // Extract second production p2
+    j = 0;
+    while (prod[i] != '\0')
+        p2[j++] = prod[i++];
+
+    p2[j] = '\0';
+
+    // Find common prefix
+    while (p1[k] == p2[k]) {
+        common[k] = p1[k];
+        k++;
+    }
+
+    common[k] = '\0';
+
+    printf("\nAfter Left Factoring:\n");
+    printf("%c -> %s%c'\n", nonterm, common, nonterm);
+    printf("%c' -> %s | %s\n", nonterm, p1 + k, p2 + k);
+
+    return 0;
+}
